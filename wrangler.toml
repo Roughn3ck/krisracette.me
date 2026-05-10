@@ -1,0 +1,13 @@
+name = "krisracette-me"
+compatibility_date = "2024-01-01"
+
+[assets]
+directory = "."
+
+[[routes]]
+pattern = "krisracette.me"
+zone_name = "krisracette.me"
+
+[[routes]]
+pattern = "www.krisracette.me"
+zone_name = "krisracette.me"

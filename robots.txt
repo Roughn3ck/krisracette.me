@@ -1,0 +1,46 @@
+# Robots.txt for krisracette.me
+# Generated: March 31, 2026
+# SEO optimized for reputation management
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /temp/
+
+# Sitemap location
+Sitemap: https://krisracette.me/sitemap.xml
+
+# Crawl delay (respectful to server)
+Crawl-delay: 2
+
+# Specific bot instructions
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Crawl-delay: 2
+
+User-agent: Slurp
+Allow: /
+Disallow: /admin/
+Crawl-delay: 3
+
+# AI training restrictions (for reputation management)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+# Clean search indexing for reputation management
+Clean-param: utm_source&utm_medium&utm_campaign
+Clean-param: ref
+Clean-param: fbclid

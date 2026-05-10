@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kris Racette | Financial Professional & Performance Researcher</title>
+    <meta name="description" content="Official site of Kris Racette (Kristopher Marc Racette). 18 years of accounting experience, Master of Commerce, and Founder of Executive Mind. Financial professional specializing in AI implementation and data analytics.">
+    <meta name="keywords" content="Kris Racette, Kristopher Racette, Kristopher Marc Racette, Financial Professional, Accountant, AI Consultant, Executive Mind, Performance Researcher, Data Analytics">
+    <meta name="author" content="Kris Racette">
+    <link rel="canonical" href="https://krisracette.me">
+    <meta name="robots" content="index, follow">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Kris Racette",
+      "alternateName": ["Kristopher Racette", "Kristopher Marc Racette"],
+      "url": "https://krisracette.me",
+      "jobTitle": "Financial Professional & AI Strategist",
+      "description": "Kris Racette is a financial professional with 18+ years of accounting experience, Master of Commerce, and Founder of Executive Mind - an AI consultancy firm.",
+      "alumniOf": "University of New South Wales",
+      "knowsAbout": ["Accounting", "Finance", "Artificial Intelligence", "Data Analytics", "Physical Performance", "Business Strategy", "Machine Learning"],
+      "sameAs": [
+        "https://www.linkedin.com/in/krisracette/",
+        "https://executivemind.io",
+        "https://soundcloud.com/krisracette"
+      ],
+      "mainEntityOfPage": "https://krisracette.me"
+    }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans">
+
+    <header class="bg-black border-b border-slate-800 py-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl font-bold text-white mb-2">Kris Racette, MComm</h1>
+            <p class="text-xl text-blue-400 font-mono tracking-tighter uppercase">Senior Financial Professional | Machine Intelligence | Data Athlete</p>
+        </div>
+    </header>
+
+
+<!-- // Professional_Identity -->
+    <main class="max-w-4xl mx-auto py-12 px-4">
+        <section class="mb-16">
+            <h2 class="text-xl font-bold text-blue-500 font-mono mb-6 uppercase tracking-widest">About Kris Racette | Financial Professional & AI Strategist</h2>
+            <p class="text-lg leading-relaxed mb-4 text-slate-300">
+                With a career spanning nearly two decades in the Australian financial sector, Kris Racette (Kristopher Marc Racette) brings a unique blend of deep accounting expertise and modern technical literacy. I specialize in the financial health of complex organizations—from national construction firms to international marketing entities.
+            </p>
+            <p class="text-lg leading-relaxed text-slate-300">
+                As the Director of <strong>Executive Mind</strong>, Kris Racette bridges the gap between financial strategy and AI implementation, helping enterprises navigate a data-driven future. With extensive experience in accounting, finance, and artificial intelligence, I provide strategic guidance for businesses looking to leverage technology for growth.
+            </p>
+        </section>
+
+<!-- // Media_Highlights -->
+<section class="mb-16 bg-slate-900/50 p-8 rounded-lg border border-slate-800">
+            <h2 class="text-xl font-bold text-blue-500 font-mono mb-6 uppercase tracking-widest">Media Features & Professional Portfolio</h2>
+            
+            <!-- Media_&_News -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xs font-bold text-slate-500 uppercase mb-3 tracking-widest">Press Coverage & Media Recognition</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://www.tweeddailynews.com.au/news/its-a-schoolie-free-zone/1174759/" target="_blank" class="hover:text-blue-400 transition underline decoration-slate-700">Tweed Daily News: Schoolie-Free Zone Leadership</a></li>
+                        <li><a href="https://www.dailytelegraph.com.au/news/nsw/tweed-heads/its-a-schooliefree-zone/news-story/765b593322d6eb1b5bc9e288c872ad06" target="_blank" class="hover:text-blue-400 transition underline decoration-slate-700">Daily Telegraph: Community Policy Features</a></li>
+                        <li><a href="https://www.accomnews.com.au/2011/06/case-study-gemini-court/" target="_blank" class="hover:text-blue-400 transition underline decoration-slate-700">AccomNews: Gemini Court Operations Case Study</a></li>
+                        <li><a href="https://www.realcommercial.com.au/news/bollywood-restauratur-dishes-out-35m-to-save-ailing-shopping-hub" target="_blank" class="hover:text-blue-400 transition underline decoration-slate-700">RealCommercial: $3.5M Shopping Hub Transaction</a></li>
+                    </ul>
+                </div>
+            <!-- / Portfolio_&_Transactions-->
+                <div>
+                    <h3 class="text-xs font-bold text-slate-500 uppercase mb-3 tracking-widest">Commercial Real Estate Portfolio</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://www.realcommercial.com.au/sold/property-helensvale-park-107-mildura-drive-helensvale-qld-4212-502866214" target="_blank" class="hover:text-blue-400 transition underline decoration-slate-700">Helensvale Park: $107M+ Commercial Sale</a></li>
+                        <li><a href="https://www.commercialrealestate.com.au/property/8-pacific-avenue-miami-qld-4220-2016735787" target="_blank" class="hover:text-blue-400 transition underline decoration-slate-700">Pacific Avenue: Miami Portfolio Analytics</a></li>
+                        <li><a href="https://www.realestate.com.au/sold/property-apartment-qld-mermaid+beach-129442330" target="_blank" class="hover:text-blue-400 transition underline decoration-slate-700">Mermaid Beach: Managed Sales Data</a></li>
+                        <li><a href="https://www.commercialrealestate.com.au/property/6-79-west-burleigh-road-burleigh-heads-qld-4220-2017305837" target="_blank" class="hover:text-blue-400 transition underline decoration-slate-700">Burleigh Heads: Asset Management Records</a></li>
+                    </ul>
+                </div>
+            <!-- / Agency_Footprint -->
+                <div>
+                    <h3 class="text-xs font-bold text-slate-500 uppercase mb-3 tracking-widest">Professional Profiles & Digital Presence</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://www.domain.com.au/real-estate-agencies/assetmanagementbusinessbrokers-25588/" target="_blank" class="hover:text-blue-400 transition underline decoration-slate-700">Asset Management Business Brokers: Agency Profile</a></li>
+                        <li><a href="https://www.domain.com.au/real-estate-agencies/assetpropertysalesgoldcoast-33300/" target="_blank" class="hover:text-blue-400 transition underline decoration-slate-700">Asset Property Sales: Licensed Operations</a></li>
+                        <li><a href="https://www.domain.com.au/7-hants-street-hamilton-qld-4007-2017005307" target="_blank" class ="hover:text-blue-400 transition underline decoration-slate-700">Brisbane Experience</a></li>
+                        <li><a href="https://soundcloud.com/krisracette/sets/study-house" target="_blank" class="hover:text-blue-400 transition underline decoration-slate-700">SoundCloud: Study & Focus Sessions</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Performance_Lab -->
+        <section class="mb-16">
+            <h2 class="text-xl font-bold text-purple-500 font-mono mb-6 uppercase tracking-widest">Performance_Lab</h2>
+            <p class="text-slate-400 mb-8 italic text-sm">Quantifying inputs for maximum cognitive and physical output. Personal growth is an iterative process of recording, analyzing, and optimizing.</p>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-black p-6 rounded border border-purple-900/50 shadow-[0_0_15px_rgba(168,85,247,0.1)]">
+                    <h3 class="text-purple-400 font-bold mb-4 uppercase text-xs tracking-widest">Protocol: Agentic Granola Mix</h3>
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Bulk_Preparation (10 Servings)</p>
+                            <ul class="text-[11px] text-slate-300 font-mono leading-relaxed">
+                                <li>- 2 cups Rolled Oats</li>
+                                <li>- 1 cup Chia Seeds</li>
+                                <li>- 1.5 cups Goji Berries (150g)</li>
+                                <li>- 1/4 cup Desiccated Coconut</li>
+                                <li>- 1/2 cup Raw Cashews</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Daily_Serving</p>
+                            <ul class="text-[11px] text-slate-300 font-mono leading-relaxed">
+                                <li>- 1/2 cup Dry Mix (above)</li>
+                                <li>- 1/2 cup Almond Milk + 1/2 cup Coconut Milk</li>
+                                <li>- 1 cup YoPRO High Protein Yogurt</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="border-t border-slate-800 pt-4">
+                        <p class="text-[10px] text-slate-500 uppercase font-bold mb-2">Estimated_Nutrient_Load_Per_Serve</p>
+                        <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-mono">
+                            <div class="bg-slate-900 p-2 rounded">
+                                <span class="block text-purple-400">~535</span> KCAL
+                            </div>
+                            <div class="bg-slate-900 p-2 rounded">
+                                <span class="block text-purple-400">~25G</span> PROTEIN
+                            </div>
+                            <div class="bg-slate-900 p-2 rounded">
+                                <span class="block text-purple-400">~12G</span> FIBER
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-black p-6 rounded border border-purple-900/50 shadow-[0_0_15px_rgba(168,85,247,0.1)]">
+                    <h3 class="text-purple-400 font-bold mb-4 uppercase text-xs tracking-widest">Protocol: Performance Electrolyte Brew</h3>
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Preparation (PER SERVING)</p>
+                            <ul class="text-[11px] text-slate-300 font-mono leading-relaxed">
+                                <li>- 1L H2O</li>
+                                <li>- 1/4 tsp Sea Salt (Sodium)</li>
+                                <li>- 1/2 tsp Potassium Chloride</li>
+                                <li>- Fresh Lime (Bioflavonoids)</li>
+                            </ul>
+                        </div>
+                        <div class="text-[10px] text-slate-500 space-y-1">
+                            <p>• Optimized to replace standard sports drinks.</p>
+                            <p>• Engineered for rapid cellular rehydration.</p>
+                            <p>• Micronutrient support for neural clarity.</p>
+                            <p>• Consume within 24 hours of preparation.</p>
+                            <p>• Potassium chloride is highly concentrated.</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-slate-800 pt-4 mb-4">
+                        <p class="text-[10px] text-slate-500 uppercase font-bold mb-2">Estimated_Mineral_Load_Per_1L</p>
+                        <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-mono">
+                            <div class="bg-slate-900 p-2 rounded">
+                                <span class="block text-purple-400">~580mg</span> SODIUM
+                            </div>
+                            <div class="bg-slate-900 p-2 rounded">
+                                <span class="block text-purple-400">~1450mg</span> POTASSIUM
+                            </div>
+                            <div class="bg-slate-900 p-2 rounded">
+                                <span class="block text-purple-400">~12mg</span> VITAMIN C
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+                <div class="bg-black p-6 rounded border border-slate-800">
+                    <h3 class="text-slate-400 font-bold mb-4 uppercase text-sm tracking-widest">V02 Max & Strength Load</h3>
+                    <div class="space-y-4">
+                        <div class="h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div class="bg-purple-600 h-full w-[85%]"></div>
+                        </div>
+                        <div class="flex justify-between text-xs font-mono">
+                            <span>Consistency Index</span>
+                            <span class="text-purple-400">98.4%</span>
+                        </div>
+                        <p class="text-xs text-slate-500">Early development of custom telemetry app: tracking session frequency, duration, intensity, and relative strength metrics.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="text-center bg-blue-900/10 p-8 rounded-xl border border-blue-900/30">
+            <h2 class="text-2xl font-bold mb-6 text-white">Connect</h2>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://www.linkedin.com/in/krisracette/" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition font-bold">LinkedIn</a>
+                <a href="https://executivemind.io" class="bg-slate-800 text-white px-6 py-2 rounded hover:bg-slate-900 transition font-bold">Executive Mind</a>
+                <a href="mailto:krisracette@me.com" class="border border-blue-600 text-blue-400 px-6 py-2 rounded hover:bg-blue-600 hover:text-white transition">Direct Contact</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-12 text-center text-slate-600 text-xs font-mono uppercase tracking-widest">
+        <p class="mb-4">Discipline in the gym translates to discipline in the office.</p>
+        <p>&copy; 2026 Kris Racette. Agenticly crafted by Executive Mind 💜.</p>
+    </footer>
+
+</body>
+</html>
