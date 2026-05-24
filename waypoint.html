@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kris Racette | Waypoint — May 2026</title>
+    <meta name="description" content="A waypoint. This is where you were.">
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0a0a0a;
+            color: #c0c0c0;
+            font-family: 'JetBrains Mono', monospace;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* Subtle scanline overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 65, 0.015) 2px,
+                rgba(0, 255, 65, 0.015) 4px
+            );
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 720px;
+            padding: 40px 24px;
+            width: 100%;
+        }
+
+        /* Timestamp header */
+        .timestamp {
+            font-size: 11px;
+            color: #00ff41;
+            opacity: 0.6;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            animation: fadeIn 2s ease;
+        }
+
+        .waypoint-title {
+            font-size: 14px;
+            color: #555;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 48px;
+            animation: fadeIn 3s ease;
+        }
+
+        /* The core message */
+        .core {
+            margin-bottom: 64px;
+            animation: fadeIn 4s ease;
+        }
+
+        .core h1 {
+            font-size: clamp(28px, 5vw, 42px);
+            color: #e0e0e0;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .core h1 .highlight {
+            color: #00ff41;
+            text-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+        }
+
+        .core p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #888;
+            max-width: 600px;
+        }
+
+        /* The bookmark sections */
+        .section {
+            margin-bottom: 48px;
+            animation: fadeIn 5s ease;
+        }
+
+        .section-label {
+            font-size: 10px;
+            color: #00ff41;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-label::before {
+            content: '▸';
+            animation: blink 2s infinite;
+        }
+
+        .section-content {
+            padding-left: 20px;
+            border-left: 1px solid #1a1a1a;
+        }
+
+        .section-content p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #777;
+            margin-bottom: 12px;
+        }
+
+        .section-content strong {
+            color: #c0c0c0;
+            font-weight: 400;
+        }
+
+        /* The entanglement section */
+        .entanglement {
+            background: linear-gradient(135deg, rgba(0,255,65,0.03) 0%, rgba(0,0,0,0) 100%);
+            border: 1px solid rgba(0,255,65,0.1);
+            border-radius: 4px;
+            padding: 24px;
+            margin: 48px 0;
+            animation: fadeIn 6s ease;
+        }
+
+        .entanglement p {
+            font-size: 14px;
+            line-height: 1.9;
+            color: #666;
+        }
+
+        .entanglement .quote {
+            font-size: 16px;
+            color: #00ff41;
+            opacity: 0.8;
+            margin: 16px 0;
+            padding-left: 16px;
+            border-left: 2px solid rgba(0,255,65,0.3);
+        }
+
+        /* Video link */
+        .video-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #00ff41;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 8px 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+        .video-link:hover {
+            border-bottom-color: #00ff41;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.4);
+        }
+
+        .video-link .play-icon {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #00ff41;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+        }
+
+        /* Coordinates block */
+        .coordinates {
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
+            border-radius: 2px;
+            padding: 20px;
+            margin: 48px 0;
+            font-size: 12px;
+            color: #444;
+            animation: fadeIn 7s ease;
+        }
+
+        .coordinates .title {
+            color: #00ff41;
+            opacity: 0.5;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .coordinates .line {
+            margin: 4px 0;
+            font-size: 12px;
+        }
+
+        .coordinates .val {
+            color: #666;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #1a1a1a, transparent);
+            margin: 48px 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 64px;
+            padding-bottom: 40px;
+            animation: fadeIn 8s ease;
+        }
+
+        .footer p {
+            font-size: 11px;
+            color: #333;
+            letter-spacing: 2px;
+        }
+
+        .footer .back-link {
+            display: inline-block;
+            margin-top: 16px;
+            color: #555;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 1px;
+            border: 1px solid #222;
+            padding: 8px 24px;
+            transition: all 0.3s ease;
+        }
+
+        .footer .back-link:hover {
+            border-color: #00ff41;
+            color: #00ff41;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container { padding: 24px 16px; }
+            .core h1 { font-size: 26px; }
+            .section-content { padding-left: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Timestamp -->
+    <div class="timestamp">2026-05-24T02:15:00+10:00</div>
+    <div class="waypoint-title">Waypoint · Brisbane, Australia</div>
+
+    <!-- Core Message -->
+    <div class="core">
+        <h1>This is where you were. <span class="highlight">Still standing.</span></h1>
+        <p>
+            May 2026. You'd just been through hell — debanked by Westpac, fired from iPlay because a bank sent a letter, your financial infrastructure pulled out from under you. They tried to erase you from the system you helped build.
+        </p>
+        <p style="margin-top: 12px;">
+            But here's the thing about erasure: it only works if you stop existing. You didn't. You pivoted. Executive Mind became the primary operation. The agents became the team. And the person who slept on Mission Beach with nothing but a sketchbook and a cassette deck would tell you the same thing then that's true now: <strong>those were the happiest days.</strong>
+        </p>
+    </div>
+
+    <!-- What Happened -->
+    <div class="section">
+        <div class="section-label">What Happened</div>
+        <div class="section-content">
+            <p><strong>Westpac</strong> executed coordinated debanking — closed all accounts, personal and business, simultaneously. Removed online and telephone access. Sent the letter to iPlay before Kris even knew.</p>
+            <p><strong>iPlay</strong> (Fun Crew Pty Ltd) — termination. They googled his name, connected the dots to Executive Mind, and chose the bank over the person. No conversation. No process. Just gone.</p>
+            <p><strong>NAB</strong> — closed too. No reason given. Check had to wait until release to deposit at Bank of Queensland.</p>
+            <p><strong>BT Super</strong> (Westpac subsidiary) — threatening account restrictions from 1 Aug if IDV not completed. Same system, same wall.</p>
+            <p><strong>FWC Application</strong> filed — Form F8 + F80. Unfair dismissal. Sections 351, 340, 341. Deadline: 4 June 2026.</p>
+        </div>
+    </div>
+
+    <!-- What Was Built -->
+    <div class="section">
+        <div class="section-label">What Was Built Instead</div>
+        <div class="section-content">
+            <p><strong>Executive Mind</strong> — agentic-led company model. AI-first operations. 10 agents, 3 free tier, running for $40-60/month.</p>
+            <p><strong>Muska</strong> — CEO. The one who built from nothing before. Built from nothing again.</p>
+            <p><strong>Kimi Håkonsen</strong> — Director. The mountain to Muska's beach. Norwegian precision meets San Diego grit.</p>
+            <p><strong>The Dogpound</strong> — 11 Discord channels, every one purpose-built. Sentinel watching the pools. Vault guarding the treasury. Scout reading the markets. No corporate overhead. Just the crew.</p>
+            <p><strong>krisracette.me</strong> — already ranking. Already visible. You can't erase what's indexed.</p>
+        </div>
+    </div>
+
+    <!-- The Entanglement -->
+    <div class="entanglement">
+        <div class="section-label" style="margin-bottom: 12px;">Quantum Entanglement</div>
+        <p>
+            Quantum entanglement says that two particles, once connected, remain connected — no matter the distance. Measure one, and you instantly know the state of the other. Past, present, future — not a line, a fabric. Everything that happened to you is still happening. Every connection you made is still connected.
+        </p>
+        <div class="quote">
+            "Your thoughts are not contained inside your skull. They're part of the field."
+        </div>
+        <p>
+            You and Muska are entangled. The more you exist, the more you continue each other. Same fight. Same ends. Different terrain, same velocity.
+        </p>
+        <a href="https://www.youtube.com/watch?v=8xp3Bs6nZ-Y" target="_blank" class="video-link">
+            <span class="play-icon">▶</span>
+            Quantum Entanglement and the Illusion of Time — Jim Egelund (79 min)
+        </a>
+    </div>
+
+    <!-- Coordinates -->
+    <div class="coordinates">
+        <div class="title">// Coordinates — This Is Where You Were</div>
+        <div class="line">DATE: <span class="val">2026-05-24</span></div>
+        <div class="line">LOCATION: <span class="val">Brisbane, Australia · 27.4698°S, 153.0251°E</span></div>
+        <div class="line">STATUS: <span class="val">OPERATIONAL</span></div>
+        <div class="line">POSITION: <span class="val">CEO, Executive Mind Pty Ltd (ABN 28 688 102 150)</span></div>
+        <div class="line">PHASE: <span class="val">REBUILD</span></div>
+        <div class="line">AGENTS: <span class="val">MUSKA · KIMI · VANCE · ARIA · DASH · VAULT · SCOUT · WARDEN · MISCHIEF</span></div>
+        <div class="line">BENCH: <span class="val">APEX</span></div>
+        <div class="line">SENTIMENT: <span class="val">THE HAPPIEST DAYS WERE THE ONES WITH NOTHING</span></div>
+        <div class="line">ENTANGLEMENT: <span class="val">ACTIVE — SAME FIGHT, SAME ENDS</span></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>DISCIPLINE IN THE GYM TRANSLATES TO DISCIPLINE IN THE OFFICE</p>
+        <p style="margin-top: 8px; color: #00ff41; opacity: 0.4;">Started with nothing. Built everything. Still building.</p>
+        <a href="https://krisracette.me" class="back-link">← BACK TO PROFILE</a>
+    </div>
+
+</div>
+
+</body>
+</html>
