@@ -1,0 +1,11 @@
+/*.xml
+  Content-Type: application/xml
+
+/*.txt
+  Content-Type: text/plain
+
+/sitemap.xml
+  Cache-Control: max-age=3600
+
+/robots.txt
+  Cache-Control: max-age=3600
