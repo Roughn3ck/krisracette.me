@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Tracker — Open-Source Flutter Fitness App by Kris Racette</title>
+    <meta name="description" content="Gym Tracker — an open-source Flutter fitness app I built for my own training. Strength and hypertrophy modes, progressive overload, body stats, session history, pre-populated exercise catalogue. Offline-first, no account, no telemetry. Built by Kris Racette. Coming soon: Deschamps, an AI agent with full training history recall.">
+    <meta name="keywords" content="Gym Tracker, Flutter, SQLite, fitness app, open source, strength training, hypertrophy, progressive overload, body stats, exercise catalogue, offline, Deschamps, AI agent, Kris Racette, Executive Mind, personal project, data athlete">
+    <meta name="author" content="Kris Racette">
+    <meta property="og:title" content="Gym Tracker — Open-Source Flutter Fitness App by Kris Racette">
+    <meta property="og:description" content="The fitness tracker I built for myself. Flutter + SQLite, offline-first, structured data. Coming soon: Deschamps, an AI agent with full training history recall.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://krisracette.me/gym-tracker">
+    <meta property="og:image" content="https://executivemind.io/assets/executive_mind.png">
+    <meta property="og:site_name" content="Kris Racette">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Gym Tracker — Open-Source Flutter Fitness App by Kris Racette">
+    <meta name="twitter:description" content="The fitness tracker I built for my own training. Flutter + SQLite, offline-first. Coming soon: Deschamps — an AI agent with full training history recall.">
+    <meta name="twitter:image" content="https://executivemind.io/assets/executive_mind.png">
+    <link rel="canonical" href="https://krisracette.me/gym-tracker">
+    <meta name="robots" content="index, follow">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0a0a0a; color: #e2e8f0; font-family: 'Courier New', Courier, monospace; }
+        .terminal-green { color: #00ff41; }
+        .terminal-green-bg { background-color: #00ff41; }
+        .border-terminal { border-color: #00ff41; }
+        .glow { text-shadow: 0 0 10px rgba(0,255,65,0.3); }
+        .card-glow:hover { box-shadow: 0 0 20px rgba(0,255,65,0.15); }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-black border-b border-slate-800 py-6 px-4">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-bold text-white tracking-tighter">KRIS RACETTE</a>
+            <nav class="flex gap-6 text-sm font-mono uppercase tracking-widest">
+                <a href="/" class="text-slate-400 hover:text-green-400 transition">Home</a>
+                <a href="https://executivemind.io" class="text-slate-400 hover:text-green-400 transition">Executive Mind</a>
+                <a href="/key-manager" class="text-slate-400 hover:text-green-400 transition">ColdStack</a>
+                <a href="/gym-tracker" class="text-green-400 font-bold">Gym Tracker</a>
+                <a href="https://github.com/Roughn3ck/gym_tracker" target="_blank" rel="noopener" class="text-green-400 hover:text-green-300 transition">GitHub →</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto py-12 px-4">
+
+        <!-- Hero -->
+        <section class="mb-16 text-center">
+            <div class="inline-block px-4 py-1 bg-green-900/30 border border-green-500/30 rounded-full text-xs font-mono text-green-400 uppercase tracking-widest mb-6">Open Source • Personal Project • v1.0</div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 glow">GYM TRACKER</h1>
+            <p class="text-xl text-green-400 font-mono mb-2">The fitness tracker I built for myself</p>
+            <p class="text-slate-400 max-w-2xl mx-auto mb-8">A Flutter app I built to log my own strength and hypertrophy training. No subscriptions. No account. No data leaving my phone. Just a clean local SQLite database and a workout form that pre-fills my last weight per exercise. Coming soon: <strong class="text-green-300">Deschamps</strong> — an AI agent with full training history recall.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://github.com/Roughn3ck/gym_tracker/releases" target="_blank" rel="noopener" class="bg-green-500 hover:bg-green-600 text-black font-bold px-8 py-3 rounded font-mono uppercase tracking-wider transition">Download on GitHub →</a>
+                <a href="#features" class="border border-green-500 text-green-400 hover:bg-green-500/10 font-bold px-8 py-3 rounded font-mono uppercase tracking-wider transition">Explore Features</a>
+            </div>
+        </section>
+
+        <!-- My Story -->
+        <section class="mb-16">
+            <h2 class="text-xl font-bold text-green-400 font-mono mb-6 uppercase tracking-widest">My Story</h2>
+            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-800">
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    For years I tracked my workouts in <strong class="text-white">OneNote</strong>. It was messy, inconsistent, and impossible to search. I tried <strong class="text-white">Excel</strong> — cleaner, but it drifted out of date the moment I skipped a week. Then I tried chatting with LLMs about my training, and ran into the same problem every time: <em>they had no context, no memory of last session, no idea what weight I was up to.</em> Each new conversation started from zero.
+                </p>
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    So I built a Flutter app to structure the data properly. Sets are rows. Reps are columns. My last weight for the squat in strength mode is one query away — not a Ctrl+F hunt through last week's OneNote. <strong class="text-green-300">Gym Tracker</strong> is the data layer. The app remembers. The data talks to itself.
+                </p>
+                <p class="text-slate-300 leading-relaxed">
+                    Then I built <strong class="text-green-300">Deschamps</strong> — an AI agent that reads the database and knows my full training history. Personalised, long-term recall that could take me from a grom, to a professional athlete, and into my eighties — all with context awareness and preserved session memory. Right down to knowing my PB run time or bench press.
+                </p>
+            </div>
+        </section>
+
+        <!-- Why I Named It Deschamps -->
+        <section class="mb-16">
+            <h2 class="text-xl font-bold text-green-400 font-mono mb-6 uppercase tracking-widest">Why "Deschamps"?</h2>
+            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-800">
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    I named the AI agent <strong class="text-green-300">Deschamps</strong> after <strong class="text-white">Didier Deschamps</strong> — captain of the 1998 World Cup-winning French side, and manager of the 2018 World Cup-winning side. <em>Two-time world champion, different roles.</em> The tactician who managed the talent. The figure who read the game and the squad, then programmed the next move.
+                </p>
+                <p class="text-slate-300 leading-relaxed">
+                    That's what I want from an AI training coach. Not a chat window that forgets me between messages — a tactician who knows the squad, knows the history, and programs the next session with full context. Deschamps is the intelligence layer above the data layer. The app stores the data. Deschamps turns it into decisions.
+                </p>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section id="features" class="mb-16">
+            <h2 class="text-xl font-bold text-green-400 font-mono mb-6 uppercase tracking-widest">Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-black/60 p-6 rounded-lg border border-slate-800 card-glow transition-all">
+                    <div class="text-green-400 text-2xl mb-3">💪</div>
+                    <h3 class="font-bold text-green-300 mb-2">Strength Mode</h3>
+                    <p class="text-sm text-slate-400">~6 reps × 5 sets, focus on maximal strength. My strength block — heavy compounds, low volume, long rests. The mode I train in changes how my next session pre-fills.</p>
+                </div>
+                <div class="bg-black/60 p-6 rounded-lg border border-slate-800 card-glow transition-all">
+                    <div class="text-green-400 text-2xl mb-3">🧬</div>
+                    <h3 class="font-bold text-green-300 mb-2">Hypertrophy Mode</h3>
+                    <p class="text-sm text-slate-400">~12 reps × 3 sets, focus on muscle growth. Strength and hypertrophy records live as separate rows — a 100kg × 5 strength entry never bleeds into an 80kg × 12 hypertrophy entry.</p>
+                </div>
+                <div class="bg-black/60 p-6 rounded-lg border border-slate-800 card-glow transition-all">
+                    <div class="text-green-400 text-2xl mb-3">📈</div>
+                    <h3 class="font-bold text-green-300 mb-2">Progressive Overload</h3>
+                    <p class="text-sm text-slate-400">Every exercise card pre-fills my last weight, reps, and sets for the current training style. Progressive overload becomes the default — not a discipline problem. I just have to train.</p>
+                </div>
+                <div class="bg-black/60 p-6 rounded-lg border border-slate-800 card-glow transition-all">
+                    <div class="text-green-400 text-2xl mb-3">📊</div>
+                    <h3 class="font-bold text-green-300 mb-2">Body Stats</h3>
+                    <p class="text-sm text-slate-400">Track weight, waist, neck, and free-text notes over time. A timeline, not a single number. I watch the trend, not the daily noise.</p>
+                </div>
+                <div class="bg-black/60 p-6 rounded-lg border border-slate-800 card-glow transition-all">
+                    <div class="text-green-400 text-2xl mb-3">📚</div>
+                    <h3 class="font-bold text-green-300 mb-2">Session History</h3>
+                    <p class="text-sm text-slate-400">Every session I've ever logged, reverse chronological. Body parts trained, run time, sauna, body weight, notes — all queryable. The system remembers so I don't have to.</p>
+                </div>
+                <div class="bg-black/60 p-6 rounded-lg border border-slate-800 card-glow transition-all">
+                    <div class="text-green-400 text-2xl mb-3">📖</div>
+                    <h3 class="font-bold text-green-300 mb-2">Exercise Catalogue</h3>
+                    <p class="text-sm text-slate-400">Pre-populated with 31 exercises across 5 body parts (Legs, Chest, Arms, Back, Shoulders). Many-to-many mapping — one exercise can target multiple body parts. I can add my own.</p>
+                </div>
+                <div class="bg-black/60 p-6 rounded-lg border border-slate-800 card-glow transition-all">
+                    <div class="text-green-400 text-2xl mb-3">📡</div>
+                    <h3 class="font-bold text-green-300 mb-2">Offline-First</h3>
+                    <p class="text-sm text-slate-400">Local SQLite database. No account. No cloud. No telemetry. I can train in a basement, on a plane, or anywhere with no signal — the app works.</p>
+                </div>
+                <div class="bg-black/60 p-6 rounded-lg border border-slate-800 card-glow transition-all">
+                    <div class="text-green-400 text-2xl mb-3">📤</div>
+                    <h3 class="font-bold text-green-300 mb-2">Database Export</h3>
+                    <p class="text-sm text-slate-400">Share a copy of the <code class="text-green-300 bg-black/60 px-1 rounded">gym_tracker.db</code> file via the system share sheet. My data, my format, my control. Backups, transfers, and migrations are trivial.</p>
+                </div>
+                <div class="bg-black/60 p-6 rounded-lg border border-slate-800 card-glow transition-all">
+                    <div class="text-green-400 text-2xl mb-3">🏃</div>
+                    <h3 class="font-bold text-green-300 mb-2">Cardio & Recovery</h3>
+                    <p class="text-sm text-slate-400">Log run distance, run time, and sauna duration alongside lifts. The full training session, in one place — not split across five different apps.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Coming Soon — Deschamps -->
+        <section class="mb-16">
+            <div class="inline-block px-4 py-1 bg-green-900/30 border border-green-500/30 rounded-full text-xs font-mono text-green-400 uppercase tracking-widest mb-6">Coming Soon</div>
+            <h2 class="text-xl font-bold text-green-400 font-mono mb-6 uppercase tracking-widest">Deschamps — The Intelligence Layer</h2>
+            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-800">
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    An AI-powered exercise, diet, and health manager. It reads my full training history, diet, injuries, and goals — and programs my next session with full context awareness. Not generic advice. Not a chat window that forgets me between messages. <em>Long-term recall</em> that could take me from a grom, to a professional athlete, and into my eighties — all with preserved session memory. Right down to knowing my PB run time or bench press.
+                </p>
+                <p class="text-slate-300 leading-relaxed">
+                    The app stores the data. Deschamps turns it into decisions. When the agent is ready, it will be available to anyone with the database — open source, self-hosted, no lock-in. I'm building the coach I want for myself. If it works for my training, it can work for yours.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div class="bg-black/60 p-6 rounded-lg border border-green-500/30 card-glow transition-all">
+                    <h3 class="font-bold text-green-300 mb-2">Full History Recall</h3>
+                    <p class="text-sm text-slate-400">Every session, every weight, every body stat — accessible to the agent as structured data. No summarisation loss. No "I don't have access to previous conversations." The data <em>is</em> the context.</p>
+                </div>
+                <div class="bg-black/60 p-6 rounded-lg border border-green-500/30 card-glow transition-all">
+                    <h3 class="font-bold text-green-300 mb-2">Context-Aware Programming</h3>
+                    <p class="text-sm text-slate-400">Reads my training blocks, recovery signals, and goals. Programs the next session with awareness of what I did, what I'm trying to do, and what my body has been through.</p>
+                </div>
+                <div class="bg-black/60 p-6 rounded-lg border border-green-500/30 card-glow transition-all">
+                    <h3 class="font-bold text-green-300 mb-2">Long-Term Coaching Memory</h3>
+                    <p class="text-sm text-slate-400">Knows my PB run time. Knows my bench press in October 2028. Remembers the shoulder tweak in 2031. A coach, not a chatbot. Decades of continuity.</p>
+                </div>
+                <div class="bg-black/60 p-6 rounded-lg border border-green-500/30 card-glow transition-all">
+                    <h3 class="font-bold text-green-300 mb-2">Open Source & Local</h3>
+                    <p class="text-sm text-slate-400">Self-hosted by default. My training history never leaves my infrastructure. The same offline-first philosophy that defines the app applies to the agent.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech Stack -->
+        <section class="mb-16">
+            <h2 class="text-xl font-bold text-green-400 font-mono mb-6 uppercase tracking-widest">Tech Stack</h2>
+            <div class="bg-black/60 p-6 rounded-lg border border-slate-800">
+                <div class="space-y-4 font-mono text-sm">
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">Framework</span>
+                        <span class="text-green-400">Flutter / Dart (SDK ^3.1.1)</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">Database</span>
+                        <span class="text-green-400">SQLite (sqflite + sqflite_common_ffi)</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">State Management</span>
+                        <span class="text-green-400">Provider</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">Architecture</span>
+                        <span class="text-green-400">Clean Architecture + Repository Pattern</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">Platforms</span>
+                        <span class="text-green-400">Android, Windows (iOS/macOS/Linux build from source)</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">License</span>
+                        <span class="text-green-400">Open Source</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Data Ownership</span>
+                        <span class="text-green-400">100% local — my database, my device</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="mb-16 text-center bg-green-900/10 p-8 rounded-xl border border-green-900/30">
+            <h2 class="text-2xl font-bold text-white mb-4">Get Gym Tracker</h2>
+            <p class="text-slate-400 mb-6 max-w-xl mx-auto">Open source. No subscriptions. No account. Download the latest release from GitHub and start training with a system that actually remembers.</p>
+            <a href="https://github.com/Roughn3ck/gym_tracker" target="_blank" rel="noopener" class="inline-block bg-green-500 hover:bg-green-600 text-black font-bold px-8 py-3 rounded font-mono uppercase tracking-wider transition">View on GitHub →</a>
+            <p class="text-xs text-slate-500 mt-4 font-mono">Built by Kris Racette • Released as open source • Source available on GitHub</p>
+        </section>
+
+        <!-- About the Author -->
+        <section class="mb-16">
+            <h2 class="text-xl font-bold text-green-400 font-mono mb-6 uppercase tracking-widest">About the Developer</h2>
+            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-800">
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    <strong class="text-white">Kris Racette</strong> (also known as Kristopher Racette and Kristopher Marc Racette) is a financial professional with 18+ years of accounting experience and a Master of Commerce from the University of New South Wales. As the Founder of <a href="https://executivemind.io" class="text-green-400 hover:text-green-300 underline">Executive Mind</a>, Kris builds AI systems, ships open-source tools, and runs an AI consultancy in Brisbane.
+                </p>
+                <p class="text-slate-300 leading-relaxed">
+                    <strong class="text-white">Gym Tracker</strong> is the project that sparked Deschamps — the realisation that fitness data, like any operational data, deserves a schema, a query layer, and an agent that respects its history. The source code is available for audit and contribution on GitHub.
+                </p>
+            </div>
+        </section>
+
+        <!-- Backlinks -->
+        <section class="mb-8">
+            <div class="flex flex-wrap justify-center gap-4 text-sm">
+                <a href="https://executivemind.io/gym-tracker" class="text-slate-500 hover:text-green-400 transition">Executive Mind →</a>
+                <a href="https://github.com/Roughn3ck/gym_tracker" class="text-slate-500 hover:text-green-400 transition">GitHub Repository →</a>
+                <a href="https://krisracette.me" class="text-slate-500 hover:text-green-400 transition">Kris Racette Home →</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-12 text-center text-slate-600 text-xs font-mono uppercase tracking-widest border-t border-slate-800">
+        <p class="mb-4">Gym Tracker — Structured data for the data athlete.</p>
+        <div class="flex flex-wrap justify-center gap-6 mb-4">
+            <a href="https://github.com/Roughn3ck/gym_tracker" class="text-green-400 hover:text-green-300 transition">GitHub</a>
+            <a href="https://executivemind.io/gym-tracker" class="text-green-400 hover:text-green-300 transition">Executive Mind</a>
+            <a href="https://krisracette.me" class="text-green-400 hover:text-green-300 transition">Kris Racette</a>
+        </div>
+        <p>&copy; 2026 Kris Racette. Released as open source.</p>
+    </footer>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Gym Tracker",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Android, Windows",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Kris Racette",
+        "url": "https://krisracette.me"
+      },
+      "description": "Gym Tracker — an open-source Flutter fitness app for logging strength and hypertrophy workouts. SQLite-backed, offline-first, with a pre-populated exercise catalogue. Built by Kris Racette. Coming soon: Deschamps, an AI agent with full training history recall.",
+      "featureList": ["Strength Training Mode", "Hypertrophy Training Mode", "Progressive Overload", "Body Stats Tracking", "Session History", "Pre-Populated Exercise Catalogue", "Offline-First", "Database Export", "Deschamps AI Agent (Coming Soon)"],
+      "url": "https://github.com/Roughn3ck/gym_tracker"
+    }
+    </script>
+
+</body>
+</html>
