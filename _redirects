@@ -1,0 +1,13 @@
+# Cloudflare Pages redirects for krisracette.me
+# Generated: 2026-07-11
+
+# Force non-www
+https://www.krisracette.me/* https://krisracette.me/:splat 301!
+
+# Trailing-slash normalization
+/connect/ /connect 301
+/waypoint/ /waypoint 301
+/waiting-room/ /waiting-room 301
+/human-rights-2026/ /human-rights-2026 301
+/gym-tracker/ /gym-tracker 301
+/key-manager/ /key-manager 301

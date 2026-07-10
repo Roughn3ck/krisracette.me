@@ -30,15 +30,24 @@ Allow: /
 Disallow: /admin/
 Crawl-delay: 3
 
-# AI training restrictions (for reputation management)
+# AI crawlers — ALLOWED for AI visibility (Scrunch audit optimization)
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 User-agent: ChatGPT-User
-Disallow: /
+Allow: /
 
 User-agent: CCBot
-Disallow: /
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
 
 # Clean search indexing for reputation management
 Clean-param: utm_source&utm_medium&utm_campaign
