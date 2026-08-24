@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agent In The Armchair — Real-Time Teams Voice Agent by Kris Racette</title>
-    <meta name="description" content="Agent In The Armchair — a real-time streaming Voice-to-Text + AI Agent I built for Microsoft Teams. Invisible to Teams, runs on a single workstation, zero per-hour cost. Silero VAD → faster-whisper → pyannote diarization → Ollama LLM gate → Piper TTS. Open source (MIT). By Kris Racette.">
-    <meta name="keywords" content="Agent In The Armchair, Microsoft Teams, voice agent, voice to text, VTT, speaker diarization, real-time transcription, Silero VAD, faster-whisper, pyannote, Ollama, Piper TTS, AI agent, local AI, open source, MIT, Kris Racette, personal project, The Pack, Executive Mind, Brisbane">
+    <meta name="description" content="Agent In The Armchair — a real-time streaming Voice-to-Text + AI Agent I built for Microsoft Teams. Invisible to Teams, runs on a single workstation, zero per-hour cost. Silero VAD → faster-whisper → pyannote diarization → Ollama LLM gate → any Piper or Kokoro TTS voice. Open source (MIT). By Kris Racette.">
+    <meta name="keywords" content="Agent In The Armchair, Microsoft Teams, voice agent, voice to text, VTT, speaker diarization, real-time transcription, Silero VAD, faster-whisper, pyannote, Ollama, Piper TTS, Kokoro TTS, Kokoro-82M, hexgrad, OHF-Voice, piper1-gpl, TTS voice, custom voice, AI agent, local AI, open source, MIT, Kris Racette, personal project, The Pack, Executive Mind, Brisbane">
     <meta name="author" content="Kris Racette">
     <meta property="og:title" content="Agent In The Armchair — Real-Time Teams Voice Agent by Kris Racette">
     <meta property="og:description" content="The Teams meeting agent I built for my own workstation. Real-time streaming VTT + AI agent. Invisible to Teams, runs on local hardware, zero per-hour cost. Open source (MIT).">
@@ -15,7 +15,7 @@
     <meta property="og:site_name" content="Kris Racette">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Agent In The Armchair — Real-Time Teams Voice Agent by Kris Racette">
-    <meta name="twitter:description" content="Invisible. Local. Free. A real-time streaming VTT + AI agent I built for Microsoft Teams. Silero VAD → faster-whisper → pyannote → Ollama → Piper TTS.">
+    <meta name="twitter:description" content="Invisible. Local. Free. A real-time streaming VTT + AI agent I built for Microsoft Teams. Silero VAD → faster-whisper → pyannote → Ollama → any Piper or Kokoro TTS voice. Open source (MIT).">
     <meta name="twitter:image" content="https://krisracette.me/images/armchair-banner.jpg">
     <link rel="canonical" href="https://krisracette.me/armchair">
     <meta name="robots" content="index, follow">
@@ -79,7 +79,7 @@
                     So I built my own. The microphone already hears the meeting. The audio already plays through my speakers. The LLM can already run on my GPU. The whole stack can be local, free, and invisible — if you build it that way. <strong class="text-green-300">Agent In The Armchair</strong> is what happened when I sat down and stitched those pieces together. The name came from the idea: the agent doesn't need a seat at the table. It sits <em>behind</em> the meeting, in the armchair, listening.
                 </p>
                 <p class="text-slate-300 leading-relaxed">
-                    No bot. No cloud. No per-hour billing. No vendor reading my conversations. Just a streaming pipeline — Silero VAD → faster-whisper → pyannote diarization → Ollama LLM gate → Piper TTS — running on the RTX 5080 that's already on my desk. The whole thing is MIT licensed and open source. If it works for my meetings, it can work for yours.
+                    No bot. No cloud. No per-hour billing. No vendor reading my conversations. Just a streaming pipeline — Silero VAD → faster-whisper → pyannote diarization → Ollama LLM gate → pluggable local TTS (Piper or Kokoro) — running on the RTX 5080 that's already on my desk. The whole thing is MIT licensed and open source. If it works for my meetings, it can work for yours.
                 </p>
             </div>
         </section>
@@ -98,7 +98,7 @@
                     <strong class="text-green-300">Step 3 — Diarize.</strong> Every 10 seconds, <strong class="text-white">pyannote-audio</strong> runs speaker diarization on a 16-second rolling buffer. The detected speaker segments get matched to the Whisper word timestamps. The dashboard lets me name each speaker retroactively — "Speaker 1" becomes "Sarah," "Speaker 2" becomes "James," and the labels apply backwards through the live transcript.
                 </p>
                 <p class="text-slate-300 leading-relaxed mb-4">
-                    <strong class="text-green-300">Step 4 — Talk (optional).</strong> If I flip the dashboard into Talk mode, the local Ollama LLM gets the latest transcript context and decides: <em>"Am I being directly addressed, or just mentioned?"</em> If directly addressed, <strong class="text-white">Piper TTS</strong> generates a response in a British RP voice (Alan), writes a WAV, and plays it back into the meeting through CABLE-A. The room hears the agent. If just mentioned, the LLM returns <code class="text-green-300 bg-black/60 px-1 rounded">[SILENCE]</code> and the agent stays quiet.
+                    <strong class="text-green-300">Step 4 — Talk (optional).</strong> If I flip the dashboard into Talk mode, the local Ollama LLM gets the latest transcript context and decides: <em>"Am I being directly addressed, or just mentioned?"</em> If directly addressed, the TTS layer generates a response, writes a WAV, and plays it back into the meeting through CABLE-A. The room hears the agent. The TTS engine is <strong class="text-white">pluggable</strong> — by default <a href="https://github.com/OHF-Voice/piper1-gpl" target="_blank" rel="noopener" class="text-green-400 hover:text-green-300 underline">Piper</a> (any of the free open-source voices, e.g. <a href="https://github.com/OHF-Voice/piper1-gpl/blob/main/VOICES.md" target="_blank" rel="noopener" class="text-green-400 hover:text-green-300 underline">Alan / British RP</a>, Aru, Northern English, US, etc.), or swap in <a href="https://github.com/hexgrad/kokoro" target="_blank" rel="noopener" class="text-green-400 hover:text-green-300 underline">Kokoro-82M</a> for 54 voices across 8 languages with sub-real-time generation. If just mentioned, the LLM returns <code class="text-green-300 bg-black/60 px-1 rounded">[SILENCE]</code> and the agent stays quiet.
                 </p>
                 <p class="text-slate-300 leading-relaxed">
                     <strong class="text-green-300">Step 5 — Archive.</strong> When I Ctrl+C out, the session saves to its own folder: <code class="text-green-300 bg-black/60 px-1 rounded">B:\armchair_tmp\session_logs\YYYY-MM-DD_HHMMSS\</code> with the transcript, the named speakers, the detected speakers, and the raw audio. Clean start next time. No bleed.
@@ -143,8 +143,8 @@
                 </div>
                 <div class="bg-black/60 p-6 rounded-lg border border-slate-800 card-glow transition-all">
                     <div class="text-green-400 text-2xl mb-3">🇬🇧</div>
-                    <h3 class="font-bold text-green-300 mb-2">Piper TTS (British RP)</h3>
-                    <p class="text-sm text-slate-400">Alan (British RP) is the default voice — fast, ~1s generation. American, Northern English, and other voices available. Voice selectable from the dashboard. Configurable speed.</p>
+                    <h3 class="font-bold text-green-300 mb-2">Pluggable Local TTS</h3>
+                    <p class="text-sm text-slate-400">Default: <a href="https://github.com/OHF-Voice/piper1-gpl" target="_blank" rel="noopener" class="text-green-400 hover:text-green-300 underline">Piper</a> — any of the free open-source voices (Alan / British RP, Aru, Northern English, US, etc.). Or swap in <a href="https://github.com/hexgrad/kokoro" target="_blank" rel="noopener" class="text-green-400 hover:text-green-300 underline">Kokoro-82M</a> for 54 voices across 8 languages with sub-real-time generation. Both local, both free, both no API keys. Voice selectable from the dashboard.</p>
                 </div>
                 <div class="bg-black/60 p-6 rounded-lg border border-slate-800 card-glow transition-all">
                     <div class="text-green-400 text-2xl mb-3">🖥️</div>
@@ -198,7 +198,7 @@
                     </div>
                     <div class="flex justify-between border-b border-slate-800 pb-2">
                         <span class="text-slate-400">Piper TTS</span>
-                        <span class="text-green-400">~1s</span>
+                        <span class="text-green-400">~1s (any Piper voice)</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 pb-2">
                         <span class="text-slate-400">Audio playback</span>
@@ -243,7 +243,7 @@
                     </div>
                     <div class="flex justify-between border-b border-slate-800 pb-2">
                         <span class="text-slate-400">TTS (Talk mode)</span>
-                        <span class="text-green-400">Piper (Alan / British RP default)</span>
+                        <span class="text-green-400">Piper (any voice) · Kokoro-82M (54 voices / 8 langs)</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 pb-2">
                         <span class="text-slate-400">Dashboard</span>
@@ -340,14 +340,15 @@
         "name": "Kris Racette",
         "url": "https://krisracette.me"
       },
-      "description": "Agent In The Armchair — a real-time streaming Voice-to-Text + AI Agent for Microsoft Teams, built by Kris Racette. Invisible to Teams (no bot joins the meeting), runs entirely on local hardware, transcribes meetings with speaker diarization, speaks when directly addressed using a British RP TTS voice. Open source (MIT).",
+      "description": "Agent In The Armchair — a real-time streaming Voice-to-Text + AI Agent for Microsoft Teams, built by Kris Racette. Invisible to Teams (no bot joins the meeting), runs entirely on local hardware, transcribes meetings with speaker diarization, speaks when directly addressed using any local TTS voice (Piper, Kokoro, or any compatible local engine). Open source (MIT).",
       "featureList": [
         "Real-Time Streaming Voice-to-Text",
         "Speaker Diarization (pyannote-audio)",
         "Silero VAD (skip silence, near-zero cost)",
         "faster-whisper incremental transcription",
         "LLM gate (Ollama) for direct-address detection",
-        "Piper TTS (British RP default)",
+        "Pluggable Local TTS (Piper or Kokoro-82M)",
+        "Piper TTS (any voice — Alan/British RP, Aru, US, Northern, etc.)",
         "Live Web Dashboard (localhost:8765)",
         "One-Click Launcher (start_armchair.bat)",
         "Session Archiving (transcript + audio + speaker data)",
