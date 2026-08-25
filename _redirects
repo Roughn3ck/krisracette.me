@@ -1,8 +1,10 @@
 # Cloudflare Pages redirects for krisracette.me
 # Generated: 2026-07-11
 
-# Force non-www
-https://www.krisracette.me/* https://krisracette.me/:splat 301!
+# www → apex redirect: handled at Cloudflare zone level (Dynamic Redirect Rule)
+# The Pages _redirects full-URL syntax doesn't work for custom domains.
+# Zone-level rule: http.host eq "www.krisracette.me" → 301 to https://krisracette.me
+# Created: 2026-08-20
 
 # Trailing-slash normalization
 /connect/ /connect 301
