@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAnt + Ollama Local SAST — Privacy-First Security Tooling by Kris Racette</title>
+    <meta name="description" content="OpenAnt + Ollama adapter — fully local LLM-assisted SAST scanner I built. No cloud, no API keys, no source code leaving the machine. Verified end-to-end on a planted SQLi corpus. Personal project, open source.">
+    <meta name="keywords" content="OpenAnt, Ollama, SAST, vulnerability scanner, local LLM, privacy-first, air-gapped, regulated, SQL injection, CWE-89, Kris Racette, Executive Mind, open source, Apache 2.0">
+    <meta name="author" content="Kris Racette">
+    <meta property="og:title" content="OpenAnt + Ollama Local SAST — Privacy-First Security Tooling">
+    <meta property="og:description" content="A first-class Ollama adapter for OpenAnt so LLM-assisted SAST runs entirely on local hardware. Source code stays on the box. Verified against planted SQLi (CWE-89).">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://krisracette.me/security/openant-ollama-local-sast">
+    <meta property="og:image" content="https://krisracette.me/images/kris_racette.jpg">
+    <meta property="og:site_name" content="Kris Racette">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="OpenAnt + Ollama Local SAST — Privacy-First Security Tooling">
+    <meta name="twitter:description" content="OpenAnt + Ollama = LLM-assisted SAST with zero cloud egress. Verified end-to-end on planted SQLi findings. Open source, by Kris Racette.">
+    <meta name="twitter:image" content="https://krisracette.me/images/kris_racette.jpg">
+    <meta name="twitter:creator" content="@R0ughnek">
+    <link rel="canonical" href="https://krisracette.me/security/openant-ollama-local-sast">
+    <meta name="robots" content="index, follow">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0a0a0a; color: #e2e8f0; font-family: 'Courier New', Courier, monospace; }
+        .terminal-green { color: #00ff41; }
+        .terminal-green-bg { background-color: #00ff41; }
+        .border-terminal { border-color: #00ff41; }
+        .glow { text-shadow: 0 0 10px rgba(0,255,65,0.3); }
+        .card-glow:hover { box-shadow: 0 0 20px rgba(0,255,65,0.15); }
+        .shield-glow { filter: drop-shadow(0 0 12px rgba(0, 255, 100, 0.35)); }
+        .finding-card { background: rgba(0,0,0,0.5); border-left: 4px solid #fcd34d; padding: 1rem 1.25rem; margin: 1rem 0; border-radius: 0 6px 6px 0; }
+        .finding-card .cwe { color: #fcd34d; font-weight: bold; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; }
+        .finding-card .result { color: #6ee7b7; font-weight: bold; }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 3px;
+            margin-right: 4px;
+            border: 1px solid;
+        }
+        .badge-open { color: #6ee7b7; border-color: rgba(110, 231, 183, 0.5); background: rgba(110, 231, 183, 0.08); }
+        .badge-verified { color: #fcd34d; border-color: rgba(252, 211, 77, 0.5); background: rgba(252, 211, 77, 0.08); }
+        .badge-pending { color: #94a3b8; border-color: rgba(148, 163, 184, 0.5); background: rgba(148, 163, 184, 0.08); }
+    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "OpenAnt + Ollama Local SAST — Privacy-First Security Tooling",
+      "alternativeHeadline": "How I extended OpenAnt so SAST runs fully local",
+      "description": "A first-class Ollama adapter for OpenAnt (open-source LLM-assisted SAST) so vulnerability scans run entirely on local hardware. No cloud, no API keys, no source code leaving the machine. Verified end-to-end with planted SQLi findings (CWE-89) detected via local mistral-small3.2.",
+      "image": "https://krisracette.me/images/kris_racette.jpg",
+      "author": {
+        "@type": "Person",
+        "@id": "https://krisracette.me/#person",
+        "name": "Kris Racette",
+        "url": "https://krisracette.me",
+        "sameAs": ["https://executivemind.io", "https://executivemind.io/author/kris-racette", "https://github.com/Roughn3ck", "https://x.com/R0ughnek", "https://www.wikidata.org/wiki/Q140051012"]
+      },
+      "datePublished": "2026-08-25",
+      "dateModified": "2026-08-25",
+      "inLanguage": "en-AU",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Kris Racette",
+        "url": "https://krisracette.me"
+      },
+      "about": [
+        {"@type": "SoftwareApplication", "name": "OpenAnt", "url": "https://github.com/knostic/OpenAnt"},
+        {"@type": "SoftwareApplication", "name": "Ollama", "url": "https://ollama.com"}
+      ],
+      "keywords": "OpenAnt, Ollama, SAST, vulnerability scanner, local LLM, privacy-first, air-gapped, CWE-89, SQL injection, Apache 2.0, open source"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://krisracette.me"},
+        {"@type": "ListItem", "position": 2, "name": "OpenAnt + Ollama Local SAST", "item": "https://krisracette.me/security/openant-ollama-local-sast"}
+      ]
+    }
+    </script>
+</head>
+<body class="min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-black border-b border-slate-800 py-6 px-4">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-bold text-white tracking-tighter">KRIS RACETTE</a>
+            <nav class="flex gap-6 text-sm font-mono uppercase tracking-widest">
+                <a href="/" class="text-slate-400 hover:text-green-400 transition">Home</a>
+                <a href="https://executivemind.io" class="text-slate-400 hover:text-green-400 transition">Executive Mind</a>
+                <a href="/key-manager" class="text-slate-400 hover:text-green-400 transition">ColdStack</a>
+                <a href="/gym-tracker" class="text-slate-400 hover:text-green-400 transition">Gym Tracker</a>
+                <a href="/armchair" class="text-slate-400 hover:text-green-400 transition">Armchair</a>
+                <a href="/security/openant-ollama-local-sast" class="text-green-400 font-bold">OpenAnt</a>
+                <!-- TODO: replace placeholder repo URL with final fork/PR URL once merged -->
+                <a href="https://github.com/Roughn3ck/OpenAnt" target="_blank" rel="noopener" class="text-green-400 hover:text-green-300 transition">GitHub →</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto py-12 px-4">
+
+        <!-- Hero -->
+        <section class="mb-16 text-center relative">
+            <div class="absolute inset-0 bg-gradient-to-br from-green-900/20 via-transparent to-yellow-900/10 pointer-events-none rounded-lg"></div>
+            <div class="relative z-10">
+                <div class="mb-6">
+                    <span class="badge badge-verified">Verified · Live</span>
+                    <span class="badge badge-open">Open Source · Apache 2.0</span>
+                    <span class="badge badge-pending">Upstream PR · pending</span>
+                </div>
+                <div class="inline-block px-4 py-1 bg-green-900/30 border border-green-500/30 rounded-full text-xs font-mono text-green-400 uppercase tracking-widest mb-6">Open Source • Personal Project • Privacy-First Security Tooling</div>
+                <div class="shield-glow text-7xl mb-6">🛡️</div>
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 glow">OPENANT + OLLAMA<br><span class="text-green-400">LOCAL SAST</span></h1>
+                <p class="text-xl text-green-400 font-mono mb-2">LLM-assisted vulnerability scanning — fully local, no code leaves the box</p>
+                <p class="text-slate-400 max-w-2xl mx-auto mb-8">I built a first-class Ollama adapter for <a href="https://github.com/knostic/OpenAnt" target="_blank" rel="noopener" class="text-green-400 hover:text-green-300 underline">OpenAnt</a> (open-source SAST from Knostic) so scans run against local models. <strong class="text-green-300">No cloud. No API keys. No source code leaving the machine.</strong> Verified end-to-end: both planted SQL injection findings (CWE-89) detected via local <code class="text-green-300 bg-black/60 px-1 rounded">mistral-small3.2</code> on commodity hardware.</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <!-- TODO: replace placeholder repo URL with final fork/PR URL once merged -->
+                    <a href="https://github.com/Roughn3ck/OpenAnt" target="_blank" rel="noopener" class="bg-green-500 hover:bg-green-600 text-black font-bold px-8 py-3 rounded font-mono uppercase tracking-wider transition">View on GitHub →</a>
+                    <a href="https://github.com/knostic/OpenAnt" target="_blank" rel="noopener" class="border border-green-500 text-green-400 hover:bg-green-500/10 font-bold px-8 py-3 rounded font-mono uppercase tracking-wider transition">OpenAnt Upstream →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Story -->
+        <section class="mb-16">
+            <h2 class="text-xl font-bold text-green-400 font-mono mb-6 uppercase tracking-widest">My Story</h2>
+            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-800">
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    LLM-assisted security tooling is having a moment. Tools like OpenAnt, Semgrep's Assistant, and a dozen new entrants are using foundation models to cut false positives, explain findings, and triage the noise that traditional SAST tools produce. The pitch is great: <em>find more, explain more, miss less.</em>
+                </p>
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    The catch is in the data flow. Most of these tools assume a cloud LLM — OpenAI, Anthropic, Google. That means your source code gets shipped to a third-party API for analysis. For most teams, that's already uncomfortable. For some teams — defence, healthcare, finance, legal, infrastructure operators — it's a hard no. The code physically cannot leave the perimeter.
+                </p>
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    I hit this wall myself. OpenAnt is one of the better open-source LLM-assisted SAST tools out there (Apache 2.0, from <a href="https://www.knostic.ai" target="_blank" rel="noopener" class="text-green-400 hover:text-green-300 underline">Knostic</a>), but it shipped with provider adapters for the usual cloud suspects. No Ollama. No local. No "bring your own model".
+                </p>
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    So I built one. A clean, first-class Ollama adapter that slots into OpenAnt's existing provider architecture — because Ollama exposes an OpenAI-compatible endpoint, the integration is mostly configuration, not reinvention. Wizard support, model registry entries, contract tests, documentation. The whole thing is structured as an upstream contribution, not a fork. Privacy-first by default.
+                </p>
+                <p class="text-slate-300 leading-relaxed">
+                    The verification run was the part that mattered. I scanned a planted-vulnerability test repo with <code class="text-green-300 bg-black/60 px-1 rounded">mistral-small3.2</code> running locally on my workstation — and both planted SQL injection findings (CWE-89) came back correct. No cloud calls. No keys leaving the box. Local model, real findings, real accuracy.
+                </p>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section id="how-it-works" class="mb-16">
+            <h2 class="text-xl font-bold text-green-400 font-mono mb-6 uppercase tracking-widest">How It Works</h2>
+            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-800">
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    <strong class="text-green-300">Step 1 — Install OpenAnt.</strong> <code class="text-green-300 bg-black/60 px-1 rounded">git clone</code> the upstream, install dependencies, run the setup wizard. Standard SAST install.
+                </p>
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    <strong class="text-green-300">Step 2 — Choose Ollama as the provider.</strong> The setup wizard now lists Ollama as a first-class provider option. API key is optional (it's local — <code class="text-green-300 bg-black/60 px-1 rounded">http://localhost:11434/v1</code>). Connectivity probe runs at setup; sensible model defaults are suggested per tier.
+                </p>
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    <strong class="text-green-300">Step 3 — Pull a model.</strong> Whatever you want, locally. <code class="text-green-300 bg-black/60 px-1 rounded">ollama pull mistral-small3.2</code>. Chat variants only — base completion models reject <code class="text-green-300 bg-black/60 px-1 rounded">/chat/completions</code> endpoints and the wizard will warn you about that.
+                </p>
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    <strong class="text-green-300">Step 4 — Warm up.</strong> Large models (15 GB+) take several minutes to load on first inference. Run a small prompt before kicking off the scan — much cheaper than discovering the timeout mid-job.
+                </p>
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    <strong class="text-green-300">Step 5 — Scan.</strong> Point OpenAnt at your repo. The local model handles LLM-assisted triage, false-positive filtering, and explanation. Source code never leaves the box. The adapter logs every call so you can audit what's being sent to the model — and the answer is: only what OpenAnt already sends to any provider, which is the function being analysed, never the full file graph.
+                </p>
+                <p class="text-slate-300 leading-relaxed">
+                    <strong class="text-green-300">Step 6 — Verify.</strong> For production deployments, run against a known-vulnerability corpus first. The same planted-finding rig I used to validate the adapter is reproducible — small SQLi-prone file, run the scan, confirm both findings come back. That's the test that proves the pipeline works on your hardware, your model, your environment.
+                </p>
+            </div>
+        </section>
+
+        <!-- What I Verified -->
+        <section class="mb-16">
+            <h2 class="text-xl font-bold text-green-400 font-mono mb-6 uppercase tracking-widest">What I Verified</h2>
+            <div class="finding-card">
+                <p class="cwe">CWE-89 · SQL Injection · Planted</p>
+                <p><span class="result">✓ Detected</span> — Local Ollama model (<code class="text-green-300 bg-black/60 px-1 rounded">mistral-small3.2</code>, 15 GB) identified both planted SQL injection findings in the test corpus. Verifier confirmed against planted sink/source pairs. Zero network egress beyond the local machine.</p>
+            </div>
+            <div class="bg-black/40 p-4 rounded border border-slate-800 mt-4">
+                <p class="text-xs font-mono uppercase tracking-widest text-green-500 mb-2">Environment</p>
+                <ul class="text-xs font-mono text-slate-300 space-y-1">
+                    <li>Provider: <span class="text-green-300">ollama</span></li>
+                    <li>Model: <span class="text-green-300">mistral-small3.2</span> (15 GB local)</li>
+                    <li>Endpoint: <span class="text-green-300">http://localhost:11434/v1</span></li>
+                    <li>Network: <span class="text-green-300">local-only</span> (no cloud calls)</li>
+                    <li>API key: <span class="text-green-300">none required</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Things That Will Bite You -->
+        <section class="mb-16">
+            <h2 class="text-xl font-bold text-green-400 font-mono mb-6 uppercase tracking-widest">Things That Will Bite You</h2>
+            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-800">
+                <p class="text-slate-300 leading-relaxed mb-3">
+                    <strong class="text-green-300">Base completion models break.</strong> Pick chat/instruct variants. The adapter calls <code class="text-green-300 bg-black/60 px-1 rounded">/chat/completions</code>; completion-only models return errors. Document this somewhere visible in your runbook.
+                </p>
+                <p class="text-slate-300 leading-relaxed mb-3">
+                    <strong class="text-green-300">Cold loads.</strong> A 15 GB model on first inference can take several minutes. Warm up before demos. Very large models (70B+) can wedge a workstation entirely — size your model to your hardware.
+                </p>
+                <p class="text-slate-300 leading-relaxed mb-3">
+                    <strong class="text-green-300">Probe timeouts.</strong> Default OpenAnt probe timeouts are tuned for cloud round-trips. Cold loads blow past them. Bump the timeout in your setup, or document the warm-up step clearly.
+                </p>
+                <p class="text-slate-300 leading-relaxed">
+                    <strong class="text-green-300">Model choice matters more than you'd think.</strong> Code-specialised models (<code class="text-green-300 bg-black/60 px-1 rounded">qwen3.8</code>, <code class="text-green-300 bg-black/60 px-1 rounded">deepseek-coder-v2</code>) substantially outperform general-purpose models on vulnerability reasoning. Benchmark on your own corpus before you commit.
+                </p>
+            </div>
+        </section>
+
+        <!-- Where This Fits -->
+        <section class="mb-16">
+            <h2 class="text-xl font-bold text-green-400 font-mono mb-6 uppercase tracking-widest">Where This Fits</h2>
+            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-800">
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    Same architecture applies anywhere you want LLM-assisted tooling without sending data to a vendor cloud:
+                </p>
+                <ul class="text-slate-300 space-y-2 text-sm">
+                    <li>→ <strong class="text-green-300">Dependency review</strong> — CVE matching, version comparison, exploit-context analysis</li>
+                    <li>→ <strong class="text-green-300">Secret scanning</strong> — pattern detection plus LLM triage of false positives, fully local</li>
+                    <li>→ <strong class="text-green-300">Threat-modelling copilots</strong> — STRIDE-style analysis against local architecture docs</li>
+                    <li>→ <strong class="text-green-300">Code-review agents</strong> — PR review with explanation, all inference on your machine</li>
+                    <li>→ <strong class="text-green-300">Compliance evidence</strong> — generate audit-ready documentation without the code ever leaving your perimeter</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Status & Next Steps -->
+        <section class="mb-16">
+            <h2 class="text-xl font-bold text-green-400 font-mono mb-6 uppercase tracking-widest">Status & Next Steps</h2>
+            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-800">
+                <ul class="text-slate-300 space-y-3 text-sm">
+                    <li>✓ <strong class="text-green-300">Adapter built</strong> — <code class="text-green-300 bg-black/60 px-1 rounded">openant-core/utilities/llm/providers/ollama.py</code></li>
+                    <li>✓ <strong class="text-green-300">Wizard integration</strong> — Ollama as a first-class provider choice</li>
+                    <li>✓ <strong class="text-green-300">Contract tests</strong> — consistent with upstream provider test pattern</li>
+                    <li>✓ <strong class="text-green-300">Documentation</strong> — install, model selection, warm-up behaviour</li>
+                    <li>✓ <strong class="text-green-300">End-to-end verified</strong> — planted SQLi findings detected via local model</li>
+                    <!-- TODO: insert upstream PR URL once merged -->
+                    <li>⧗ <strong class="text-yellow-300">Upstream PR</strong> — pending, link goes live once merged to <a href="https://github.com/knostic/OpenAnt" target="_blank" rel="noopener" class="text-green-400 hover:text-green-300 underline">knostic/OpenAnt</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Backlinks -->
+        <section class="mb-8">
+            <div class="flex flex-wrap justify-center gap-4 text-sm">
+                <a href="https://executivemind.io/security/openant-ollama-local-sast" class="text-slate-500 hover:text-green-400 transition">Executive Mind →</a>
+                <!-- TODO: replace placeholder repo URL with final fork/PR URL once merged -->
+                <a href="https://github.com/Roughn3ck/OpenAnt" class="text-slate-500 hover:text-green-400 transition">GitHub Repository →</a>
+                <a href="https://github.com/knostic/OpenAnt" class="text-slate-500 hover:text-green-400 transition">OpenAnt Upstream →</a>
+                <a href="https://krisracette.me" class="text-slate-500 hover:text-green-400 transition">Kris Racette Home →</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-12 text-center text-slate-600 text-xs font-mono uppercase tracking-widest border-t border-slate-800">
+        <p class="mb-4">OpenAnt + Ollama — Privacy-first security tooling. Verified. Open source.</p>
+        <div class="flex flex-wrap justify-center gap-6 mb-4">
+            <a href="https://executivemind.io/security/openant-ollama-local-sast" class="text-green-400 hover:text-green-300 transition">Executive Mind</a>
+            <a href="https://github.com/knostic/OpenAnt" class="text-green-400 hover:text-green-300 transition">OpenAnt Upstream</a>
+            <a href="https://krisracette.me" class="text-green-400 hover:text-green-300 transition">Kris Racette</a>
+        </div>
+        <p>&copy; 2026 Kris Racette. Released under Apache 2.0.</p>
+    </footer>
+
+</body>
+</html>
