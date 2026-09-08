@@ -1,0 +1,66 @@
+/* krisracette.me — scroll-reveal system.
+ * Synced with the EM site's reveal.v2.css (2026-09-08) so both sites share
+ * the same animation language. Spec: aria/ACTIVE-CONTENT.md.
+ *
+ * Tuned per Kris's "make it pop" request: bigger travel distances, deeper
+ * scale-start, wider stagger delays. Single-file change site-wide.
+ *
+ * v2 suffix is intentional — see AGENTS.md edge-cache trap. Cloudflare
+ * Pages serves /assets/* with cache-control: immutable, so renaming is
+ * the only programmatic cache-bust when we iterate.
+ */
+
+/* ===== Block-level reveals (default) ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(56px);
+  transition: opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.reveal-left  { transform: translateX(-72px); }
+.reveal.reveal-right { transform: translateX(72px); }
+.reveal.reveal-scale { transform: scale(0.88); }
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+}
+
+/* ===== Stagger children inside a revealed container ===== */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(48px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal-stagger.is-visible > *              { opacity: 1; transform: translateY(0); }
+.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.10s; }
+.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.30s; }
+.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.50s; }
+.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.70s; }
+.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.90s; }
+.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 1.10s; }
+
+/* ===== Section-level fade-in (whole <section>/<main> settles as one unit) ===== */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(80px) scale(0.96);
+  transform-origin: center top;
+  transition: opacity 1.2s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal-section.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ===== Accessibility: respect users who prefer reduced motion =====
+   Non-negotiable. !important overrides the reveal transitions so users
+   with vestibular sensitivities see content immediately, no animation. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-section, .reveal-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
