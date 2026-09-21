@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deschamps — Recipe Book</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    background: #f5f5f5;
+    color: #1a1a2e;
+    min-height: 100vh;
+  }
+  .header {
+    background: #1a1a2e;
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .header h1 {
+    font-size: 20pt;
+    font-weight: 900;
+    color: #e63946;
+    letter-spacing: 1px;
+  }
+  .header .sub {
+    color: #a8dadc;
+    font-size: 10pt;
+  }
+  .selector-bar {
+    background: white;
+    padding: 15px 30px;
+    border-bottom: 2px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .selector-bar label {
+    font-weight: 700;
+    font-size: 10pt;
+    color: #457b9d;
+  }
+  .selector-bar select {
+    padding: 8px 14px;
+    font-size: 11pt;
+    border: 2px solid #a8dadc;
+    border-radius: 8px;
+    background: white;
+    min-width: 300px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .selector-bar select:focus {
+    outline: none;
+    border-color: #457b9d;
+  }
+  .recipe-card {
+    max-width: 800px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: none;
+  }
+  .recipe-card.active { display: block; }
+  .recipe-header {
+    background: #1a1a2e;
+    color: white;
+    padding: 24px 30px;
+  }
+  .recipe-header h2 {
+    font-size: 18pt;
+    color: #e63946;
+    margin-bottom: 4px;
+  }
+  .recipe-header .meta {
+    font-size: 9pt;
+    color: #a8dadc;
+  }
+  .recipe-header .meta span {
+    margin-right: 16px;
+  }
+  .recipe-body {
+    padding: 24px 30px;
+  }
+  .macro-strip {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .macro-pill {
+    flex: 1;
+    min-width: 70px;
+    background: #f1faee;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    border-left: 3px solid #e63946;
+  }
+  .macro-pill .val {
+    font-size: 16pt;
+    font-weight: 800;
+    color: #1a1a2e;
+  }
+  .macro-pill .lbl {
+    font-size: 7pt;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  h3 {
+    font-size: 13pt;
+    color: #457b9d;
+    margin: 18px 0 10px 0;
+    border-bottom: 2px solid #a8dadc;
+    padding-bottom: 4px;
+  }
+  .ingredient-list {
+    list-style: none;
+    padding: 0;
+  }
+  .ingredient-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10pt;
+  }
+  .ingredient-list li:last-child { border-bottom: none; }
+  .ingredient-list .qty { color: #e63946; font-weight: 700; }
+  .instructions ol {
+    padding-left: 20px;
+    font-size: 10pt;
+    line-height: 1.7;
+  }
+  .instructions ol li { margin-bottom: 6px; }
+  .storage-box {
+    background: #f1faee;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 16px;
+    font-size: 9.5pt;
+    border-left: 4px solid #457b9d;
+  }
+  .storage-box strong { color: #457b9d; }
+  .notes-box {
+    background: #fff3e0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 9.5pt;
+    border-left: 4px solid #f4a261;
+  }
+  .notes-box strong { color: #e76f51; }
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+  }
+  .empty-state .icon { font-size: 40pt; margin-bottom: 10px; }
+  .empty-state p { font-size: 11pt; }
+  .footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 8pt;
+    color: #aaa;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>DESCHAMPS</h1>
+  <span class="sub">Recipe Book</span>
+</div>
+
+<div class="selector-bar">
+  <label for="recipeSelect">Select a recipe:</label>
+  <select id="recipeSelect">
+    <option value="">— Choose a recipe —</option>
+  </select>
+</div>
+
+<div id="recipeContainer">
+  <div class="empty-state">
+    <div class="icon">🍽️</div>
+    <p>Select a recipe from the dropdown above</p>
+  </div>
+</div>
+
+<div class="footer">
+  Deschamps &middot; Diet Database &middot; Double-click to open
+</div>
+
+<!-- RECIPE DATA: edit diet_plan/recipes.js to add or change recipes -->
+<script>
+// Deschamps Recipe Book — DATA FILE
+// Single source of truth for recipes. To add a recipe: append one object to this array.
+// recipes.html (the renderer) loads this file; it works from file:// — no server needed.
+// Shape: { id, name, preparation: {instructions, storage}, servings, notes, ingredients: [{name, qty}], macros: {P, F, C, kcal} }
+
+const recipes = [
+  {
+    "id": 1,
+    "name": "Agentic Granola Mix",
+    "preparation": {
+      "instructions": "Mix dry ingredients in bulk container. Each morning: scoop 1/2 cup dry mix, add 1/2 cup almond milk + 1/2 cup coconut milk, top with 1 cup YoPRO yogurt.",
+      "storage": "Store dry mix in airtight container at room temperature."
+    },
+    "servings": 10,
+    "notes": "Dry mix only. ~8.8g P, 10.8g F, 33.2g C, 255 kcal per serving. Dry mix serving ~59g (1/2 cup). Makes 10 servings from bulk preparation. Add 1/2 cup almond milk + 1/2 cup coconut milk + 1 cup YoPRO yogurt separately.",
+    "ingredients": [
+      {"name": "Rolled Oats", "qty": "180.0g"},
+      {"name": "Chia Seeds", "qty": "170.0g"},
+      {"name": "Goji Berries", "qty": "150.0g"},
+      {"name": "Desiccated Coconut", "qty": "20.0g"},
+      {"name": "Raw Cashews", "qty": "70.0g"}
+    ],
+    "macros": {"P": 8.8, "F": 10.8, "C": 33.2, "kcal": 255.1}
+  },
+  {
+    "id": 2,
+    "name": "Granola Breakfast Add-ons",
+    "preparation": {
+      "instructions": "Add to 1 serving of Agentic Granola dry mix."
+    },
+    "servings": 1,
+    "notes": "Per serving: 1/2 cup almond milk + 1/2 cup coconut milk + 1 cup YoPRO yogurt. ~18.8g P, 4.6g F, 10.0g C, 154 kcal.",
+    "ingredients": [
+      {"name": "Unsweetened Almond Milk", "qty": "120.0g"},
+      {"name": "Natural Coconut Milk", "qty": "120.0g"},
+      {"name": "High Protein Yogurt", "qty": "200.0g"}
+    ],
+    "macros": {"P": 18.8, "F": 4.6, "C": 10.0, "kcal": 154.4}
+  },
+  {
+    "id": 3,
+    "name": "5-Egg Spice Omelet",
+    "preparation": {
+      "instructions": "1. Crack 5 eggs into a bowl and whisk thoroughly. 2. Dice half an onion and a whole tomato. 3. Add generous handful of spinach to the egg mix. 4. Add 2 tbsp curry powder and 2 tbsp garam masala to the eggs, whisk in. 5. Heat half tbsp coconut oil in a non-stick pan over medium heat. 6. Pour in the egg mixture, add diced onion and tomato. 7. Pour in 1 cup coconut milk. 8. Cook until set, flip or fold, serve hot.",
+      "storage": "Best eaten fresh. Reheat in pan if needed."
+    },
+    "servings": 1,
+    "notes": "Kris new flavour KING recipe. 5 eggs, spinach, onion, tomato, coconut milk, coconut oil, curry powder, garam masala. Single serving.",
+    "ingredients": [
+      {"name": "Egg (whole, large)", "qty": "250.0g"},
+      {"name": "Spinach (fresh)", "qty": "60.0g"},
+      {"name": "Onion (brown)", "qty": "75.0g"},
+      {"name": "Tomato (fresh)", "qty": "100.0g"},
+      {"name": "Natural Coconut Milk", "qty": "250.0g"},
+      {"name": "Coconut Oil", "qty": "7.0g"},
+      {"name": "Curry Powder", "qty": "10.0g"},
+      {"name": "Garam Masala", "qty": "10.0g"}
+    ],
+    "macros": {"P": 39.1, "F": 40.4, "C": 27.3, "kcal": 611.2}
+  },
+  {
+    "id": 4,
+    "name": "Southern Spiced Chicken (Oven-Baked)",
+    "preparation": {
+      "instructions": "1. Butterfly 3 chicken breasts to even thickness. 2. Marinate in yoghurt for 2hrs+ (or at least 30min). 3. For the coating: mix 50/50 almond meal and panko breadcrumbs + 1 tsp smoked paprika, 1 tsp garlic powder, 1 tsp onion powder, 1/4 tsp cayenne, salt and pepper. 4. Coat each breast, place on wire rack over baking tray. 5. Bake at 200\u00b0C for 25-30min until golden and cooked through. 6. Rest 2min, serve with homemade coleslaw and lemon wedges.",
+      "storage": "Refrigerate leftovers up to 3 days. Great cold on salads."
+    },
+    "servings": 3,
+    "notes": "From the Aug 2026 diet plan. Oven-baked southern spiced chicken. 3 chicken breasts, yoghurt marinade, almond meal + panko coating. Serve with homemade coleslaw. 3 servings (1 breast each). Leftovers keep well.",
+    "ingredients": [
+      {"name": "Chicken Breast (cooked, no skin)", "qty": "480.0g"},
+      {"name": "High Protein Yogurt", "qty": "100.0g"},
+      {"name": "Paprika", "qty": "2.0g"},
+      {"name": "Garlic Powder", "qty": "2.0g"},
+      {"name": "Onion Powder", "qty": "2.0g"},
+      {"name": "Cayenne Pepper", "qty": "0.5g"},
+      {"name": "Salt", "qty": "2.0g"},
+      {"name": "Black Pepper", "qty": "1.0g"},
+      {"name": "Almond Meal", "qty": "25.0g"},
+      {"name": "Panko Breadcrumbs", "qty": "25.0g"}
+    ],
+    "macros": {"P": 55.7, "F": 10.7, "C": 11.1, "kcal": 372.6}
+  },
+  {
+    "id": 5,
+    "name": "Homemade Coleslaw",
+    "preparation": {
+      "instructions": "1. Shred 150g green cabbage and 100g purple cabbage. 2. Grate 1 medium carrot. 3. Mix dressing: 100g Greek yoghurt, 1 tbsp apple cider vinegar, squeeze of lemon, salt and pepper. 4. Combine veg and dressing, toss well. 5. Let sit 15min before serving for flavours to meld.",
+      "storage": "Best fresh. Refrigerate up to 2 days, though it will soften."
+    },
+    "servings": 4,
+    "notes": "Side dish for Southern Spiced Chicken. Shredded green + purple cabbage, grated carrot, Greek yoghurt dressing. 4 servings.",
+    "ingredients": [
+      {"name": "Cabbage (green)", "qty": "150.0g"},
+      {"name": "Cabbage (purple/red)", "qty": "100.0g"},
+      {"name": "Carrot", "qty": "50.0g"},
+      {"name": "High Protein Yogurt", "qty": "100.0g"},
+      {"name": "Apple Cider Vinegar", "qty": "15.0g"},
+      {"name": "Lemon Juice", "qty": "10.0g"},
+      {"name": "Salt", "qty": "1.0g"},
+      {"name": "Black Pepper", "qty": "1.0g"}
+    ],
+    "macros": {"P": 3.2, "F": 0.2, "C": 6.3, "kcal": 36.3}
+  },
+  {
+    "id": 6,
+    "name": "Miso Bone Broth & Tofu Soup",
+    "preparation": {
+      "instructions": "1. Heat olive oil in a large pot over medium heat; add garlic and onion, cook until onion is soft.\n2. Add broccoli and the mushroom to the pot.\n3. Once cooked, add ~2 cups water, bone broth concentrate, and the spinach & kale mix.\n4. Bring to the boil until broccoli is soft and spinach is wilted.\n5. Remove from heat, then stir miso paste in OFF heat — boiling miso kills its live probiotic cultures; stirred in at serving temperature they stay alive.\n6. Serve hot and enjoy!",
+      "storage": "Batch-prep: cook the chassis in bulk (oil, garlic, onion, broccoli, mushroom, water + broth); portion x5-6 — first 3-4 days in fridge, rest frozen. At reheat: add greens, tofu and wakame fresh, then stir miso in OFF heat; kimchi side stays cold. Single serve: fridge up to 3 days."
+    },
+    "servings": 1,
+    "notes": "Kris's recipe (added 20 Sep 2026). Per serve: 36.6g P / 64.6g F / 33.5g C / ~826 kcal. Olive oil (4 tbsp = 56g) is ~60% of the calories — a 1-2 tbsp version saves 250-375 kcal. Bone broth concentrate 40g = 16g protein. Salty from broth + miso (~2g sodium): no extra salt needed. Products: broth Woolworths 886900, miso 122044, tofu 695085. PROBIOTIC METHOD FIX (21 Sep 2026): original method boiled the miso, killing live cultures — miso now stirs in OFF heat. For daily breakfast use, drop oil to 1-2 tbsp.",
+    "ingredients": [
+      {"name": "Olive Oil", "qty": "56.0g (~4 tbsp)"},
+      {"name": "Garlic (cloves)", "qty": "9.0g (~3 cloves)"},
+      {"name": "Brown Onion", "qty": "75.0g (~1/2 onion)"},
+      {"name": "Broccoli", "qty": "150.0g (~1/2 head)"},
+      {"name": "Large Cap Mushroom", "qty": "100.0g (1 mushroom)"},
+      {"name": "Spinach & Kale Mix", "qty": "60.0g (large handful)"},
+      {"name": "Water", "qty": "~500ml (2 cups)"},
+      {"name": "The Stock Merchant Bone Broth Concentrate", "qty": "40.0g (2 tbsp)"},
+      {"name": "Miso Tasty White Miso Paste", "qty": "17.0g (1 tbsp)"},
+      {"name": "Macro Classic Tofu (regular)", "qty": "150.0g"}
+    ],
+    "macros": {"P": 36.6, "F": 64.6, "C": 33.5, "kcal": 826.4}
+  },
+  {
+    "id": 7,
+    "name": "Laksa Tofu Soup (Breakfast Rotation)",
+    "preparation": {
+      "instructions": "1. Heat olive oil in a large pot over medium heat; add garlic and onion, cook until onion is soft.\n2. Add laksa paste and cook 1-2 min until fragrant.\n3. Add broccoli and the mushroom to the pot.\n4. Once cooked, add ~2 cups water, bone broth concentrate, wakame, and the spinach & kale mix.\n5. Bring to the boil until broccoli is soft and spinach is wilted.\n6. Serve hot.",
+      "storage": "Batch-prep: bloom the laksa paste in the bulk batch (oil, garlic, onion, broccoli, mushroom, water + broth); portion x5-6 — 3-4 days fridge, rest frozen. At reheat: add greens, tofu and wakame fresh; kimchi side stays cold. Single serve: fridge up to 3 days."
+    },
+    "servings": 1,
+    "notes": "Breakfast-rotation variant of #6 (added 21 Sep 2026): same veg chassis, miso swapped for laksa paste, wakame strip for iodine (the job Nuzest was doing). Laksa paste = Ayam label 108 kcal, 3.3P/4.8F/12C per 100g; contains dried shrimp. AS-WRITTEN (4 tbsp oil): 35.7g P / 64.8g F / 32.7g C / ~825 kcal. DAILY BREAKFAST version: cap oil at 1-2 tbsp → ~456-578 kcal, 22.8-36.8g F. Probiotics live in the #6 miso variant (stirred in OFF heat) or a kimchi/sauerkraut side — not in this paste.",
+    "ingredients": [
+      {"name": "Olive Oil", "qty": "56.0g (~4 tbsp)"},
+      {"name": "Garlic (cloves)", "qty": "9.0g (~3 cloves)"},
+      {"name": "Brown Onion", "qty": "75.0g (~1/2 onion)"},
+      {"name": "Broccoli", "qty": "150.0g (~1/2 head)"},
+      {"name": "Large Cap Mushroom", "qty": "100.0g (1 mushroom)"},
+      {"name": "Spinach & Kale Mix", "qty": "60.0g (large handful)"},
+      {"name": "Water", "qty": "~500ml (2 cups)"},
+      {"name": "The Stock Merchant Bone Broth Concentrate", "qty": "40.0g (2 tbsp)"},
+      {"name": "Ayam Laksa Paste", "qty": "25.0g (~1 tbsp)"},
+      {"name": "Wakame (dried)", "qty": "3.0g (optional — iodine)"},
+      {"name": "Macro Classic Tofu (regular)", "qty": "150.0g"}
+    ],
+    "macros": {"P": 35.7, "F": 64.8, "C": 32.7, "kcal": 824.6}
+  }
+];
+</script>
+
+<script>
+// ===== POPULATE DROPDOWN =====
+const select = document.getElementById('recipeSelect');
+recipes.forEach(r => {
+  const opt = document.createElement('option');
+  opt.value = r.id;
+  opt.textContent = r.name;
+  select.appendChild(opt);
+});
+
+// ===== RENDER =====
+function renderRecipe(id) {
+  const container = document.getElementById('recipeContainer');
+  if (!id) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">🍽️</div><p>Select a recipe from the dropdown above</p></div>';
+    return;
+  }
+
+  const r = recipes.find(x => x.id == id);
+  if (!r) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">❓</div><p>Recipe not found</p></div>';
+    return;
+  }
+
+  const prep = r.preparation || {};
+  const instructions = prep.instructions || 'No instructions saved.';
+  const storage = prep.storage || 'No storage notes.';
+
+  let ingredientsHtml = '';
+  if (r.ingredients && r.ingredients.length) {
+    ingredientsHtml = '<ul class="ingredient-list">';
+    r.ingredients.forEach(ing => {
+      ingredientsHtml += `<li><span>${ing.name}</span><span class="qty">${ing.qty}</span></li>`;
+    });
+    ingredientsHtml += '</ul>';
+  } else {
+    ingredientsHtml = '<p style="color:#999;font-size:10pt;">No ingredients linked yet.</p>';
+  }
+
+  let notesHtml = '';
+  if (r.notes) {
+    notesHtml = `<div class="notes-box"><strong>Notes:</strong> ${r.notes}</div>`;
+  }
+
+  // Split instructions into steps
+  const steps = instructions.split('\n').filter(s => s.trim());
+  const stepsHtml = steps.map(s => `<li>${s.replace(/^\d+[\.\)]\s*/, '')}</li>`).join('');
+
+  container.innerHTML = `
+    <div class="recipe-card active">
+      <div class="recipe-header">
+        <h2>${r.name}</h2>
+        <div class="meta">
+          <span>🍽️ ${r.servings} serving${r.servings > 1 ? 's' : ''}</span>
+          ${r.macros ? `<span>💪 ${r.macros.P}g protein</span>` : ''}
+          ${r.macros ? `<span>🔥 ${r.macros.kcal} kcal</span>` : ''}
+        </div>
+      </div>
+      <div class="recipe-body">
+        ${r.macros ? `
+        <div class="macro-strip">
+          <div class="macro-pill"><div class="val">${r.macros.P}g</div><div class="lbl">Protein</div></div>
+          <div class="macro-pill"><div class="val">${r.macros.F}g</div><div class="lbl">Fat</div></div>
+          <div class="macro-pill"><div class="val">${r.macros.C}g</div><div class="lbl">Carbs</div></div>
+          <div class="macro-pill"><div class="val">${r.macros.kcal}</div><div class="lbl">Calories</div></div>
+        </div>
+        ` : ''}
+
+        <h3>Ingredients</h3>
+        ${ingredientsHtml}
+
+        <h3>Instructions</h3>
+        <div class="instructions">
+          <ol>${stepsHtml}</ol>
+        </div>
+
+        <div class="storage-box">
+          <strong>Storage:</strong> ${storage}
+        </div>
+
+        ${notesHtml}
+      </div>
+    </div>
+  `;
+}
+
+document.getElementById('recipeSelect').addEventListener('change', function() {
+  renderRecipe(this.value);
+});
+</script>
+</body>
+</html>

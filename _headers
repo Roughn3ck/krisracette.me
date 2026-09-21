@@ -35,3 +35,6 @@
 /connect
   Cache-Control: no-cache
   X-Robots-Tag: noindex, nofollow
+
+/performance-lab/recipe-book.html
+  X-Robots-Tag: noindex
