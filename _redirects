@@ -12,7 +12,11 @@
 /waiting-room/ /waiting-room 301
 /human-rights-2026/ /human-rights-2026 301
 /gym-tracker/ /gym-tracker 301
-/key-manager/ /key-manager 301
 /107-mildura-drive/ /107-mildura-drive 301
 /performance-lab/green-drink-replacement/ /performance-lab/green-drink-replacement 301
 /security/openant-ollama-local-sast/ /security/openant-ollama-local-sast 301
+
+# ColdStack removed 2026-10-13 (security incident) — product no longer available
+/key-manager 410
+/key-manager.html 410
+/key-manager/ /key-manager 301
