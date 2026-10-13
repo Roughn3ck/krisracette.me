@@ -17,6 +17,6 @@
 /security/openant-ollama-local-sast/ /security/openant-ollama-local-sast 301
 
 # ColdStack removed 2026-10-13 (security incident) — product no longer available
-/key-manager /gone 410
-/key-manager.html /gone 410
+/key-manager /gone.html 410
+/key-manager.html /gone.html 410
 /key-manager/ /key-manager 301
